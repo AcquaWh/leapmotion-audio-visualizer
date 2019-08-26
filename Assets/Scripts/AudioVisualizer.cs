@@ -6,9 +6,26 @@ public class AudioVisualizer : MonoBehaviour
 {
     float[] spectrum;
     public float frequency {get; set;}
+
+    float lowFreq;
+    float midFreq;
+    float highFreq;
+
     AudioSource music;
+
+    public static AudioVisualizer instance;
+
     void Start()
     {
+        if(!instance)
+        {
+            instance = this;
+            DontDestroyOnLoad(instance);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
         spectrum = new float[256];
         music = GetComponent<AudioSource>();
     }
@@ -20,15 +37,25 @@ public class AudioVisualizer : MonoBehaviour
         for (int i = 1; i < spectrum.Length - 1; i++)
         {
             frequency = spectrum[i];
-        }
 
-        /* Debug.Log(spectrum[10]);
-        for (int i = 1; i < spectrum.Length - 1; i++)
-        {
-            Debug.DrawLine(new Vector3(i - 1, spectrum[i] + 10, 0), new Vector3(i, spectrum[i + 1] + 10, 0), Color.red);
-            Debug.DrawLine(new Vector3(i - 1, Mathf.Log(spectrum[i - 1]) + 10, 2), new Vector3(i, Mathf.Log(spectrum[i]) + 10, 2), Color.cyan);
-            Debug.DrawLine(new Vector3(Mathf.Log(i - 1), spectrum[i - 1] - 10, 1), new Vector3(Mathf.Log(i), spectrum[i] - 10, 1), Color.green);
-            Debug.DrawLine(new Vector3(Mathf.Log(i - 1), Mathf.Log(spectrum[i - 1]), 3), new Vector3(Mathf.Log(i), Mathf.Log(spectrum[i]), 3), Color.blue);
-        }  */
+            lowFreq = frequency < 200f ? frequency : lowFreq;
+            midFreq = frequency > 200f || frequency <= 5000f ? frequency : midFreq;
+            highFreq = frequency > 5000f || frequency < 20000f ? frequency : highFreq;
+        }
+   }
+
+   public float LowFreq
+   {
+       get => lowFreq;
+   }
+
+   public float MidFreq
+   {
+       get => midFreq;
+   }
+
+   public float HighFreq
+   {
+       get => highFreq;
    }
 }

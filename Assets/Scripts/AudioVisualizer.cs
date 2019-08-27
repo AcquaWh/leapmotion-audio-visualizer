@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class AudioVisualizer : MonoBehaviour
 {
     float[] spectrum;
@@ -43,7 +42,6 @@ public class AudioVisualizer : MonoBehaviour
             highFreq = frequency > 5000f || frequency < 20000f ? frequency : highFreq;
         }
    }
-
    public float LowFreq
    {
        get => lowFreq;
